@@ -1,12 +1,12 @@
 class PricingRules
-  def apply_discounts(item, item_count)
-    item_price = item[:price]
-    item_product_code = item[:product_code]
+  def apply_discounts(item)
+    item_price = item.product.price
+    item_product_code = item.product.code
 
-    case item_product_code
-    when 'GR1' then gr1_discount(item_price, item_count)
-    when 'SR1' then sr1_discount(item_count)
-    when 'CF1' then cf1_discount(item_price, item_count)
+    case item.product.code
+    when 'GR1' then gr1_discount(item_price, item.quantity)
+    when 'SR1' then sr1_discount(item.quantity)
+    when 'CF1' then cf1_discount(item_price, item.quantity)
     end
   end
 

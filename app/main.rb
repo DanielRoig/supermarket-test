@@ -1,23 +1,15 @@
 require_relative 'pricing_rules'
 require_relative 'checkout'
+require_relative 'item'
+require_relative 'product'
 
-item1 = {
-  product_code: 'GR1',
-  name: 'Green tea',
-  price: 311
-}
+GR1 = Product.new('GR1', 'Green tea', 311)
+SR1 = Product.new('SR1', 'Strawberries', 500)
+CF1 = Product.new('CF1', 'Coffee', 1123)
 
-item2 = {
-  product_code: 'SR1',
-  name: 'Strawberries',
-  price: 500
-}
-
-item3 = {
-  product_code: 'CF1',
-  name: 'Coffee',
-  price: 1123
-}
+item1 = Item.new(GR1)
+item2 = Item.new(SR1)
+item3 = Item.new(CF1)
 
 pricing_rules = PricingRules.new
 
@@ -26,7 +18,7 @@ def create_new_basket(items, pricing_rules)
   items.each do |item|
     co.scan(item)
   end
-  puts "Basket: #{items.map { |item| item[:product_code] }.join(',')}"
+  puts "Basket: #{items.map { |item| item.product.code }.join(',')}"
   puts "Total price expected: #{co.total}"
   puts "\n"
 end
