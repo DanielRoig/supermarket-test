@@ -11,33 +11,12 @@ class Checkout
   end
 
   def total
-    total_basket_amount = sum_basket_amount
+    total_basket_amount = @basket.sum { |item| item.total }
 
     to_currency(total_basket_amount)
   end
 
   private
-
-  def sum_basket_amount
-    total_basket_amount = 0
-    @basket.each do |item|
-      total_basket_amount += sum_item_amount(item)
-    end
-    total_basket_amount
-  end
-
-  def sum_item_amount(item)
-    total_item_amount_price_discounted = apply_discounts(item)
-    unless total_item_amount_price_discounted.nil?
-      return total_item_amount_price_discounted
-    end
-
-    item.product.price * item.quantity
-  end
-
-  def apply_discounts(item)
-    @pricing_rules.apply_discounts(item)
-  end
 
   def add_item_to_basket(product)
     basket_item = find_basket_item(product.code)
