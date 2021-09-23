@@ -6,5 +6,7 @@ SR1:
   min_quantity: 3
 CF1:
   type: 'discount_percentage'
-  percentage: 66
+  percentage:
+    numerator: 2
+    denominator: 3
   min_quantity: 3
