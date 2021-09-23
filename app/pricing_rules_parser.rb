@@ -2,7 +2,6 @@ class PricingRulesParser
   class << self
     def total(item)
       @item = item
-      @pricing_rule = item.pricing_rule
 
       calculate_price
     end
@@ -17,7 +16,7 @@ class PricingRulesParser
     end
 
     def apply_dicount
-      return send(@pricing_rule['type']) unless @pricing_rule.nil?
+      return send(@item.pricing_rule['type']) unless @item.pricing_rule.nil?
     end
 
     def regular_price
@@ -33,19 +32,18 @@ class PricingRulesParser
     end
 
     def new_price
-      return unless @item.quantity >= @pricing_rule['min_quantity']
+      return unless @item.quantity >= @item.pricing_rule['min_quantity']
 
-      @item.quantity * @pricing_rule['new_price']
+      @item.quantity * @item.pricing_rule['new_price']
     end
 
     def discount_percentage
-      return unless @item.quantity >= @pricing_rule['min_quantity']
+      return unless @item.quantity >= @item.pricing_rule['min_quantity']
 
-      x = @item.product.price * @pricing_rule['percentage']['numerator'] * @item.quantity
+      x = @item.product.price * @item.pricing_rule['percentage']['numerator'] * @item.quantity
 
-      q, r = x.divmod(@pricing_rule['percentage']['denominator'])
+      x.divmod(@item.pricing_rule['percentage']['denominator']).sum
 
-      q + r
     end
   end
 end
