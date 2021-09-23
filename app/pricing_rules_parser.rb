@@ -10,7 +10,14 @@ class PricingRulesParser
     private
 
     def calculate_price
-      send(@pricing_rule['type']) || regular_price
+      discounted_price = apply_dicount
+      return regular_price unless discounted_price
+
+      discounted_price
+    end
+
+    def apply_dicount
+      return send(@pricing_rule['type']) unless @pricing_rule.nil?
     end
 
     def regular_price
