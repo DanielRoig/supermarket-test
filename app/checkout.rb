@@ -48,11 +48,15 @@ class Checkout
   end
 
   def initialize_item(product)
-    @basket << Item.new(product)
+    @basket << Item.new(product, pricing_rule(product.code))
   end
 
   def find_basket_item(product_code)
     @basket.find { |item| item.product.code == product_code }
+  end
+
+  def pricing_rule(product_code)
+    @pricing_rules[product_code]
   end
 
   def to_currency(amount)

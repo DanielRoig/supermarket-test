@@ -1,8 +1,9 @@
 class Item
-  attr_reader :product, :quantity
+  attr_reader :product, :quantity, :pricing_rule
 
-  def initialize(product)
+  def initialize(product, pricing_rule)
     @product = product
+    @pricing_rule = pricing_rule
     @quantity = 1
   end
 
