@@ -1,101 +1,51 @@
 require 'rspec'
 require './app/checkout'
-require './app/pricing_rules'
+require './app/product'
+require './app/Item'
 
 RSpec.describe Checkout do
   subject { described_class.new(pricing_rules) }
-  let(:pricing_rules) { PricingRules.new }
 
-  let(:item1) do
-    {
-      product_code: 'GR1',
-      name: 'Green tea',
-      price: 311
-    }
-  end
+  let(:pricing_rules) { { 'GR1' => { 'type' => 'get_two_pay_one' } } }
 
-  let(:item2) do
-    {
-      product_code: 'SR1',
-      name: 'Strawberries',
-      price: 500
-    }
-  end
+  GR1 = Product.new('GR1', 'Green tea', 311)
+  CF1 = Product.new('CF1', 'Coffee', 1123)
 
   describe '#scan' do
     context 'when product does not exist in basket' do
-      let(:item1_count) { 1 }
+      let(:scan_item) { subject.scan(GR1) }
+
       it 'adds the item to basket' do
-        subject.scan(item1)
-        expect(subject.basket).to eql({ item1 => item1_count })
+        expect { scan_item }.to change { subject.basket.length }.by(1)
       end
     end
 
     context 'when product already exist in basket' do
-      let(:item1_count) { 2 }
-      it 'increse the count item' do
-        subject.scan(item1)
-        subject.scan(item1)
-        expect(subject.basket).to eql({ item1 => item1_count })
+      it 'does not add same item' do
+        subject.scan(GR1)
+        subject.scan(GR1)
+        expect(subject.basket.length).to eql(1)
       end
     end
 
-    context 'when we two 2 diferent items in basket' do
-      let(:item1_count) { 1 }
-      let(:item2_count) { 1 }
+    context 'when we add two 2 diferent items in basket' do
       it 'has two items' do
-        subject.scan(item1)
-        subject.scan(item2)
-        expect(subject.basket).to eql({ item1 => item1_count,
-item2 => item2_count })
+        subject.scan(GR1)
+        subject.scan(CF1)
+        expect(subject.basket.length).to eql(2)
       end
     end
   end
 
   describe '#total' do
-    context 'when products with no-discount are added' do
-      it 'returns the total basket amount' do
-        subject.scan(item1)
-        subject.scan(item2)
-        expect(subject.total).to eql('£8.11')
-      end
+    before do
+      allow_any_instance_of(Item).to \
+        receive(:total).and_return(200)
     end
-
-    context 'when products with no-discount and discount are added' do
-      before do
-        allow_any_instance_of(PricingRules).to \
-          receive(:apply_discounts).and_return(nil)
-
-        allow_any_instance_of(PricingRules).to \
-          receive(:apply_discounts).with(item1,
-                                         item1_count).and_return(total_item1_amount_price_discounted)
-      end
-
-      let(:total_item1_amount_price_discounted) { 200 }
-      let(:item1_count) { 2 }
-
-      it 'returns the total basket amount with discount added' do
-        subject.scan(item1)
-        subject.scan(item1)
-        subject.scan(item2)
-
-        expect(subject.total).to eql('£7.00')
-      end
-    end
-
-    context 'when only products with discount are added' do
-      before do
-        allow_any_instance_of(PricingRules).to \
-          receive(:apply_discounts).and_return(total_item1_amount_price_discounted)
-      end
-
-      let(:total_item1_amount_price_discounted) { 200 }
-
-      it 'returns the total basket amount with discount added' do
-        subject.scan(item1)
-        subject.scan(item1)
-        subject.scan(item2)
-
+    context 'when there are products in basket' do
+      it 'returns the sum of total items' do
+        subject.scan(GR1)
+        subject.scan(CF1)
         expect(subject.total).to eql('£4.00')
       end
     end

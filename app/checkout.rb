@@ -1,3 +1,5 @@
+require_relative 'item'
+
 class Checkout
   attr_reader :basket
 
