@@ -18,7 +18,9 @@ class PricingRulesParser
     end
 
     def get_two_pay_one
-      return ((@item.product.price * (@item.quantity + 1)) / 2) unless @item.quantity.even?
+      unless @item.quantity.even?
+        return ((@item.product.price * (@item.quantity + 1)) / 2)
+      end
 
       ((@item.product.price * @item.quantity) / 2)
     end
@@ -36,7 +38,7 @@ class PricingRulesParser
 
       q, r = x.divmod(@pricing_rule['percentage']['denominator'])
 
-      q+r
+      q + r
     end
   end
 end

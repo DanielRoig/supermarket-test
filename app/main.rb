@@ -1,5 +1,4 @@
 require 'yaml'
-require_relative 'pricing_rules'
 require_relative 'checkout'
 require_relative 'item'
 require_relative 'product'
@@ -8,7 +7,7 @@ GR1 = Product.new('GR1', 'Green tea', 311)
 SR1 = Product.new('SR1', 'Strawberries', 500)
 CF1 = Product.new('CF1', 'Coffee', 1123)
 
-pricing_rules = YAML.load(File.read("pricing_rules.yml"))
+pricing_rules = YAML.load(File.read('pricing_rules.yml'))
 
 def create_new_basket(items, pricing_rules)
   co = Checkout.new(pricing_rules)
