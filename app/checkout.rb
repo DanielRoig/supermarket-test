@@ -6,8 +6,8 @@ class Checkout
     @pricing_rules = pricing_rules
   end
 
-  def scan(item)
-    add_item_to_basket(item)
+  def scan(product)
+    add_item_to_basket(product)
   end
 
   def total
@@ -39,15 +39,19 @@ class Checkout
     @pricing_rules.apply_discounts(item)
   end
 
-  def add_item_to_basket(item)
-    item_in_basket = item_in_basket?(item.product.code)
+  def add_item_to_basket(product)
+    basket_item = find_basket_item(product.code)
 
-    return @basket << item unless item_in_basket
+    return initialize_item(product) unless basket_item
 
-    item_in_basket.increse_quantity
+    basket_item.increse_quantity
   end
 
-  def item_in_basket?(product_code)
+  def initialize_item(product)
+    @basket << Item.new(product)
+  end
+
+  def find_basket_item(product_code)
     @basket.find { |item| item.product.code == product_code }
   end
 
