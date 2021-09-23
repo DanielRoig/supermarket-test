@@ -9,7 +9,7 @@ class Item
     @quantity = quantity
   end
 
-  def increse_quantity
+  def increase_quantity
     @quantity += 1
   end
 

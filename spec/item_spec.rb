@@ -27,13 +27,13 @@ RSpec.describe Item do
     end
   end
 
-  describe '#Increse_quantity' do
+  describe '#Increase_quantity' do
     context 'when method is called' do
       it 'increases the item quantity' do
-        new_item.increse_quantity
-        expect { new_item.increse_quantity }.to change {
-                                                  new_item.quantity
-                                                } .by(1)
+        new_item.increase_quantity
+        expect { new_item.increase_quantity }.to change {
+                                                   new_item.quantity
+                                                 } .by(1)
       end
     end
   end

@@ -1,6 +1,5 @@
 require 'yaml'
 require_relative 'checkout'
-require_relative 'item'
 require_relative 'product'
 
 GR1 = Product.new('GR1', 'Green tea', 311)

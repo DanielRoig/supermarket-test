@@ -25,19 +25,19 @@ class Checkout
 
     return initialize_item(product) unless basket_item
 
-    basket_item.increse_quantity
+    basket_item.increase_quantity
   end
 
   def initialize_item(product)
     @basket << Item.new(product, pricing_rule(product.code))
   end
 
-  def find_basket_item(product_code)
-    @basket.find { |item| item.product.code == product_code }
+  def find_basket_item(code)
+    @basket.find { |item| item.product.code == code }
   end
 
-  def pricing_rule(product_code)
-    @pricing_rules[product_code]
+  def pricing_rule(code)
+    @pricing_rules[code]
   end
 
   def to_currency(amount)
