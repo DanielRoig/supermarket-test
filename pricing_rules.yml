@@ -1,0 +1,10 @@
+GR1:
+  type: 'get_two_pay_one'
+SR1:
+  type: 'new_price'
+  new_price: 450
+  min_quantity: 3
+CF1:
+  type: 'discount_percentage'
+  percentage: 66
+  min_quantity: 3
